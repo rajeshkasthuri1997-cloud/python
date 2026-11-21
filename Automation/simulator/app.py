@@ -82,4 +82,4 @@ def get_equipment_by_id(equipment_id):
 
 if __name__ == "__main__":
     # debug=True enables auto-reload on code changes and detailed error pages
-    app.run(debug=True)
+    app.run(debug=True, threaded=True)

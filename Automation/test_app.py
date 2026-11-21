@@ -1,3 +1,5 @@
+from concurrent.futures import ThreadPoolExecutor
+
 import pytest
 
 from simulator.app import app
@@ -58,6 +60,21 @@ def test_get_equipment_by_id_returns_data(equipment_id, expected_data):
 
     assert response.status_code == 200
     assert response.get_json() == expected_data
+
+
+def test_get_equipment_by_id_handles_concurrent_requests():
+    equipment_ids = [101, 102] * 5
+
+    def fetch_equipment(equipment_id):
+        with app.test_client() as client:
+            response = client.get(f"/equipment/{equipment_id}")
+            return response.status_code, response.get_json()
+
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        results = list(executor.map(fetch_equipment, equipment_ids))
+
+    assert [status_code for status_code, _ in results] == [200] * len(equipment_ids)
+    assert [data["id"] for _, data in results] == equipment_ids
 
 
 def test_get_missing_equipment_returns_404():
