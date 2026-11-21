@@ -1,0 +1,14 @@
+[
+  {
+    "id": 101,
+    "name": "flight control unit",
+    "type": "bFCU",
+    "STATUS": "operational"
+  },
+  {
+    "id": 102,
+    "name": "flight control unit",
+    "type": "bFCU",
+    "STATUS": "operational"
+  }
+]
